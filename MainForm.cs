@@ -25,37 +25,35 @@ namespace Courseword_DN
             bool loadAsEdgList = RepresentationEdgesR.Checked;
 
             if (!confirmation) return;
-            using (OpenFileDialog openFileDialog = new())
+            using OpenFileDialog openFileDialog = new();
+            openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 2;
-                openFileDialog.RestoreDirectory = true;
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                var filePath = openFileDialog.FileName;
+                if (loadAsAdjMatrix)
                 {
-                    var filePath = openFileDialog.FileName;
-                    if (loadAsAdjMatrix)
+                    if (!MGraph.ReadAsAdjencyMatrix(filePath))
                     {
-                        if (!MGraph.ReadAsAdjencyMatrix(filePath))
-                        {
-                            ThrowErrorMsg("Chosen file is damaged or selected wrong graph representation for this file");
-                        }
+                        ThrowErrorMsg("Chosen file is damaged or selected wrong graph representation for this file");
                     }
-                    else if (loadAsIncMatrix)
-                    {
-                        if (!MGraph.ReadAsIncidenceMatrix(filePath))
-                        {
-                            ThrowErrorMsg("Chosen file is damaged or selected wrong graph representation for this file");
-                        }
-                    }
-                    else if (loadAsEdgList)
-                    {
-                        if (!MGraph.ReadAsEdgesList(filePath))
-                        {
-                            ThrowErrorMsg("Chosen file is damaged or selected wrong graph representation for this file");
-                        }
-                    }
-                    UpdateUI();                    
                 }
+                else if (loadAsIncMatrix)
+                {
+                    if (!MGraph.ReadAsIncidenceMatrix(filePath))
+                    {
+                        ThrowErrorMsg("Chosen file is damaged or selected wrong graph representation for this file");
+                    }
+                }
+                else if (loadAsEdgList)
+                {
+                    if (!MGraph.ReadAsEdgesList(filePath))
+                    {
+                        ThrowErrorMsg("Chosen file is damaged or selected wrong graph representation for this file");
+                    }
+                }
+                UpdateUI();
             }
         }
 

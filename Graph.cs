@@ -32,7 +32,7 @@
             Vertices.Add(new Vertex());
         }
 
-        public void AddVertices(int verticesCount)
+        private void AddVertices(int verticesCount)
         {
             for (int i = 0; i < verticesCount; i++)
             {
@@ -144,8 +144,7 @@
                 incidences[(int)vertexBIdx] = "0";
 
                 if (IndexOfStr(incidences, "1") is not null) { Clear(); return false; }
-
-                Vertices[(int)vertexAIdx].AddEdge(Vertices[(int)vertexBIdx]);
+                AddEdge((int)vertexAIdx, (int)vertexBIdx);
             }
             return true;
         }
@@ -218,7 +217,7 @@
                 if (!int.TryParse(edges[0], out int vertexAIdx)) { Clear(); return false; }
                 if (!int.TryParse(edges[1], out int vertexBIdx)) { Clear(); return false; }
                 if (!IsInBounds(vertexAIdx, 0, Vertices.Count - 1) || !IsInBounds(vertexBIdx, 0, Vertices.Count - 1)) { Clear(); return false; }
-                Vertices[vertexAIdx].AddEdge(Vertices[vertexBIdx]);
+                AddEdge(vertexAIdx, vertexBIdx);
             }
             return true;
         }
@@ -280,7 +279,7 @@
                 int vertexAIdx = RandomGenerator.Next(Vertices.Count);
                 int vertexBIdx = RandomGenerator.Next(Vertices.Count);
 
-                Vertices[vertexAIdx].AddEdge(Vertices[vertexBIdx]);
+                AddEdge(vertexAIdx, vertexBIdx);
             }
         }
 
@@ -348,7 +347,7 @@
             return Vertices.FirstOrDefault(item => item.GetNotVisited() is not null);
         }
 
-        private Vertex? GetLeastVisited()
+        public Vertex? GetLeastVisited()
         {
             if (Vertices == null) return null;
 
