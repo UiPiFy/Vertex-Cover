@@ -32,7 +32,7 @@
             Vertices.Add(new Vertex());
         }
 
-        private void AddVertices(int verticesCount)
+        public void AddVertices(int verticesCount)
         {
             for (int i = 0; i < verticesCount; i++)
             {
